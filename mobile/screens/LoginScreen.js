@@ -26,7 +26,7 @@ export default function LoginScreen() {
   const { signIn } = useAuth()
 
   // Fonction de connexion
-  const handleLogin = async () => {
+ const handleLogin = async () => {
     console.log("[v0] 📱 LoginScreen - handleLogin appelé")
     console.log("[v0] Email:", email)
 
@@ -39,6 +39,7 @@ export default function LoginScreen() {
     setIsLoading(true)
     setError("")
     console.log("[v0] 🔄 Tentative de connexion...")
+    // Affiche l'URL exacte pour vérifier le port (3000 ou 3643)
     console.log("[v0] URL appelée:", `${API_URL}/api/auth/login`)
 
     try {
@@ -50,9 +51,30 @@ export default function LoginScreen() {
       })
 
       console.log("[v0] 📥 Réponse reçue, status:", response.status)
-      const data = await response.json()
-      console.log("[v0] 📦 Data reçue:", data)
 
+      // --- ETAPE CRUCIALE DE DEBUG ---
+      // 1. On récupère le texte brut (ne plante pas si c'est du HTML)
+      const textResponse = await response.text()
+      
+      console.log("====================================")
+      console.log("🔍 CONTENU REÇU DU SERVEUR (500 premiers caractères) :")
+      console.log(textResponse.substring(0, 500))
+      console.log("====================================")
+
+      // 2. On essaie de convertir manuellement en JSON
+      let data
+      try {
+        data = JSON.parse(textResponse)
+        console.log("[v0] 📦 Data parsée avec succès:", data)
+      } catch (parseError) {
+        // C'est ici qu'on attrape l'erreur "Unexpected character <"
+        console.error("[v0] ❌ CECI N'EST PAS DU JSON VALIDE !")
+        setError("Erreur technique : Le serveur renvoie une page Web au lieu des données. Vérifiez les logs.")
+        setIsLoading(false)
+        return // On arrête tout ici pour ne pas planter la suite
+      }
+
+      // 3. Traitement normal si c'est bien du JSON
       if (response.ok) {
         console.log("[v0] ✅ Connexion réussie, token reçu")
         console.log("[v0] 🔑 Appel de signIn avec le token")
@@ -62,11 +84,12 @@ export default function LoginScreen() {
         console.log("[v0] ❌ Erreur serveur:", data.error)
         setError(data.error || "Erreur lors de la connexion")
       }
+
     } catch (error) {
       console.error("[v0] ❌ ERREUR CRITIQUE lors de la connexion:", error)
       console.error("[v0] Type d'erreur:", error.name)
       console.error("[v0] Message:", error.message)
-      setError("Impossible de se connecter au serveur. Vérifiez votre connexion réseau et que le backend est démarré.")
+      setError("Impossible de se connecter au serveur. Vérifiez votre connexion réseau.")
     } finally {
       setIsLoading(false)
       console.log("[v0] 🏁 handleLogin terminé")

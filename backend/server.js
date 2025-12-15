@@ -10,7 +10,7 @@ const sessionsRoutes = require("./routes/sessions")
 const uploadRoutes = require("./routes/upload")
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3643
 
 // Créer le dossier uploads s'il n'existe pas
 const uploadsDir = path.join(__dirname, "uploads")

@@ -22,8 +22,8 @@ function getApiUrl() {
   }
 
   // Use local IP if configured
-  if (LOCAL_IP !== "VOTRE_IP_ICI") {
-    return `http://${LOCAL_IP}:3000`
+  if (LOCAL_IP !== "192.168.56.1") {
+    return `http://${LOCAL_IP}:3643`
   }
 
   // Fallback
@@ -40,7 +40,7 @@ console.log("[v0] Plateforme:", Platform.OS)
 console.log("[v0] API_URL:", API_URL)
 console.log("========================================")
 
-if (Platform.OS !== "web" && LOCAL_IP === "VOTRE_IP_ICI" && !API_URL.includes("exp.direct")) {
+if (Platform.OS !== "web" && LOCAL_IP === "192.168.56.1" && !API_URL.includes("exp.direct")) {
   console.warn("========================================")
   console.warn("[v0] ⚠️  IP NON CONFIGURÉE")
   console.warn("========================================")

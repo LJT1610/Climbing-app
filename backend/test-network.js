@@ -13,13 +13,13 @@ Object.keys(networkInterfaces).forEach((interfaceName) => {
     if (iface.family === "IPv4" && !iface.internal) {
       console.log(`   ${interfaceName}: ${iface.address}`)
       console.log(`   → Utilisez cette IP dans mobile/config.js`)
-      console.log(`   → Testez: http://${iface.address}:3000/api/health\n`)
+      console.log(`   → Testez: http://${iface.address}:3643/api/health\n`)
     }
   })
 })
 
-// Tester si le port 3000 est disponible
-const testPort = 3000
+// Tester si le port 3643 est disponible
+const testPort = 3643
 const server = http.createServer((req, res) => {
   res.writeHead(200)
   res.end("Test OK - Le serveur répond correctement")
