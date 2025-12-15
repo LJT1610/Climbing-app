@@ -6,11 +6,10 @@ const LOCAL_IP = "172.16.142.221"
 
 function getApiUrl() {
   if (Platform.OS === "web") {
-    return "http://localhost:3000"
+    return "http://localhost:3643"
   }
 
-  // ❌ SUPPRIMEZ les conditions compliquées qui bloquent
-  // ✅ RETOURNEZ DIRECTEMENT L'ADRESSE :
+
   return `http://${LOCAL_IP}:3643`
 }
 
